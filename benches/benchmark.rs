@@ -142,15 +142,15 @@ fn main() {
         res.throughput(m.len() as _)
     );
 
-    let res = bench.run(options, || test_aes128ocb(&mut m));
-    println!(
-        "aes128-ocb   (this crate) : {}",
-        res.throughput(m.len() as _)
-    );
-
     let res = bench.run(options, || test_aes256ocb(&mut m));
     println!(
         "aes256-ocb   (this crate) : {}",
+        res.throughput(m.len() as _)
+    );
+
+    let res = bench.run(options, || test_aes128ocb(&mut m));
+    println!(
+        "aes128-ocb   (this crate) : {}",
         res.throughput(m.len() as _)
     );
 
