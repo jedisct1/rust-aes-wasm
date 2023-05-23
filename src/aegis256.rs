@@ -111,8 +111,8 @@ pub fn decrypt(
     if ciphertext_and_tag.len() < TAG_LEN {
         return Err(Error::VerificationFailed);
     }
-    let ciphertext = &ciphertext_and_tag.as_ref()[..ciphertext_and_tag.len() - TAG_LEN];
-    let tag = &ciphertext_and_tag.as_ref()[ciphertext_and_tag.len() - TAG_LEN..];
+    let ciphertext = &ciphertext_and_tag[..ciphertext_and_tag.len() - TAG_LEN];
+    let tag = &ciphertext_and_tag[ciphertext_and_tag.len() - TAG_LEN..];
     decrypt_detached(ciphertext, tag.try_into().unwrap(), ad, key, nonce)
 }
 
@@ -127,10 +127,10 @@ mod test {
         let msg = b"hello world";
         let ad = b"additional data";
         let (ciphertext, tag) = encrypt_detached(msg, ad, &key, nonce);
-        let plaintext = decrypt_detached(&ciphertext, &tag, ad, &key, nonce).unwrap();
+        let plaintext = decrypt_detached(ciphertext, &tag, ad, &key, nonce).unwrap();
         assert_eq!(plaintext, msg);
         let ciphertext_and_tag = encrypt(msg, ad, &key, nonce);
-        let plaintext = decrypt(&ciphertext_and_tag, ad, &key, nonce).unwrap();
+        let plaintext = decrypt(ciphertext_and_tag, ad, &key, nonce).unwrap();
         assert_eq!(plaintext, msg);
     }
 }

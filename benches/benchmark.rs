@@ -44,42 +44,42 @@ fn test_aes128gcm(m: &mut [u8]) {
     use aes128gcm::*;
     let key = Key::default();
     let nonce = Nonce::default();
-    black_box(encrypt_detached(m, &[], &key, nonce));
+    black_box(encrypt_detached(m, [], &key, nonce));
 }
 
 fn test_aes128ocb(m: &mut [u8]) {
     use aes128ocb::*;
     let key = Key::default();
     let nonce = Nonce::default();
-    black_box(encrypt_detached(m, &[], &key, nonce));
+    black_box(encrypt_detached(m, [], &key, nonce));
 }
 
 fn test_aegis128l(m: &mut [u8]) {
     use aegis128l::*;
     let key = Key::default();
     let nonce = Nonce::default();
-    black_box(encrypt_detached(m, &[], &key, nonce));
+    black_box(encrypt_detached(m, [], &key, nonce));
 }
 
 fn test_aes256gcm(m: &mut [u8]) {
     use aes256gcm::*;
     let key = Key::default();
     let nonce = Nonce::default();
-    black_box(encrypt_detached(m, &[], &key, nonce));
+    black_box(encrypt_detached(m, [], &key, nonce));
 }
 
 fn test_aes256ocb(m: &mut [u8]) {
     use aes256ocb::*;
     let key = Key::default();
     let nonce = Nonce::default();
-    black_box(encrypt_detached(m, &[], &key, nonce));
+    black_box(encrypt_detached(m, [], &key, nonce));
 }
 
 fn test_aegis256(m: &mut [u8]) {
     use aegis256::*;
     let key = Key::default();
     let nonce = Nonce::default();
-    black_box(encrypt_detached(m, &[], &key, nonce));
+    black_box(encrypt_detached(m, [], &key, nonce));
 }
 
 fn test_aes128ctr(m: &mut [u8]) {

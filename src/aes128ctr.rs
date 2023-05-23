@@ -51,7 +51,7 @@ mod test {
         let iv = IV::default();
         let msg = b"hello world";
         let ciphertext = encrypt(msg, &key, iv);
-        let plaintext = decrypt(&ciphertext, &key, iv);
+        let plaintext = decrypt(ciphertext, &key, iv);
         assert_eq!(plaintext, msg);
     }
 }
