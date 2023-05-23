@@ -1,29 +1,43 @@
 use aes_wasm::*;
 
 use aegis::aegis128l::Aegis128L;
-use aes_gcm::{aead::AeadInPlace as _, aead::KeyInit as _, Aes128Gcm, Aes256Gcm};
+use aes::cipher::{KeyIvInit, StreamCipher};
+use aes_gcm::aead::Payload;
+use aes_gcm::aes;
+use aes_gcm::{aead::Aead as _, aead::KeyInit as _, Aes128Gcm, Aes256Gcm};
+use cmac::Cmac;
 
 use benchmark_simple::*;
+
+type Aes128Ctr = ctr::Ctr64BE<aes::Aes128>;
 
 fn test_aes256gcm_rust(m: &mut [u8]) {
     let key = aes_gcm::Key::<Aes256Gcm>::from_slice(&[0u8; 32]);
     let nonce = aes_gcm::Nonce::from_slice(&[0u8; 12]);
     let state = Aes256Gcm::new(key);
-    state.encrypt_in_place_detached(nonce, &[], m).unwrap();
+    black_box(state.encrypt(nonce, Payload { msg: m, aad: &[] }).unwrap());
 }
 
 fn test_aes128gcm_rust(m: &mut [u8]) {
     let key = aes_gcm::Key::<Aes128Gcm>::from_slice(&[0u8; 16]);
     let nonce = aes_gcm::Nonce::from_slice(&[0u8; 12]);
     let state = Aes128Gcm::new(key);
-    state.encrypt_in_place_detached(nonce, &[], m).unwrap();
+    black_box(state.encrypt(nonce, Payload { msg: m, aad: &[] }).unwrap());
 }
 
 fn test_aegis128l_rust(m: &mut [u8]) {
     let key = [0u8; 16];
     let nonce = [0u8; 16];
     let state = Aegis128L::new(&nonce, &key);
-    state.encrypt_in_place(m, &[]);
+    black_box(state.encrypt(m, &[]));
+}
+
+fn test_aes128ctr_rust(m: &mut [u8]) {
+    let key = [0u8; 16];
+    let mut cipher = Aes128Ctr::new(&key.into(), &Default::default());
+    let mut m2 = m.to_vec();
+    cipher.apply_keystream(&mut m2);
+    black_box(m2);
 }
 
 fn test_aes128gcm(m: &mut [u8]) {
@@ -81,6 +95,16 @@ fn test_cmac_aes128(m: &mut [u8]) {
     black_box(mac(m, &key));
 }
 
+fn test_cmac_aes128_rust(m: &mut [u8]) {
+    let key = [0u8; 16];
+    let mut t = Cmac::<aes::Aes128>::new_from_slice(&key).unwrap();
+    {
+        use cmac::Mac as _;
+        t.update(m);
+        black_box(t.finalize().into_bytes());
+    }
+}
+
 fn main() {
     let bench = Bench::new();
     let mut m = vec![0xd0u8; 16384];
@@ -94,69 +118,81 @@ fn main() {
         ..Default::default()
     };
 
-    let res = bench.run(options, || test_aegis128l_rust(&mut m));
-    println!(
-        "aegis-128l   (aegis crate) : {}",
-        res.throughput(m.len() as _)
-    );
-
-    let res = bench.run(options, || test_aes128gcm_rust(&mut m));
-    println!(
-        "aes-128-gcm  (aes crate)   : {}",
-        res.throughput(m.len() as _)
-    );
-
     let res = bench.run(options, || test_aes256gcm_rust(&mut m));
     println!(
-        "aes-256-gcm  (aes crate)   : {}",
-        res.throughput(m.len() as _)
-    );
-
-    let res = bench.run(options, || test_aes128gcm(&mut m));
-    println!(
-        "aes128-gcm   (aes-wasm)    : {}",
-        res.throughput(m.len() as _)
-    );
-
-    let res = bench.run(options, || test_aes128ocb(&mut m));
-    println!(
-        "aes128-ocb   (aes-wasm)    : {}",
-        res.throughput(m.len() as _)
-    );
-
-    let res = bench.run(options, || test_aegis128l(&mut m));
-    println!(
-        "aegis-128l   (aes_wasm)    : {}",
+        "aes256-gcm   (aes crate)  : {}",
         res.throughput(m.len() as _)
     );
 
     let res = bench.run(options, || test_aes256gcm(&mut m));
     println!(
-        "aes256-gcm   (aes-wasm)    : {}",
+        "aes256-gcm   (this crate) : {}",
+        res.throughput(m.len() as _)
+    );
+
+    let res = bench.run(options, || test_aes128gcm_rust(&mut m));
+    println!(
+        "aes128-gcm   (aes crate)  : {}",
+        res.throughput(m.len() as _)
+    );
+
+    let res = bench.run(options, || test_aes128gcm(&mut m));
+    println!(
+        "aes128-gcm   (this crate) : {}",
+        res.throughput(m.len() as _)
+    );
+
+    let res = bench.run(options, || test_aes128ocb(&mut m));
+    println!(
+        "aes128-ocb   (this crate) : {}",
         res.throughput(m.len() as _)
     );
 
     let res = bench.run(options, || test_aes256ocb(&mut m));
     println!(
-        "aes256-ocb   (aes-wasm)    : {}",
+        "aes256-ocb   (this crate) : {}",
         res.throughput(m.len() as _)
     );
 
     let res = bench.run(options, || test_aegis256(&mut m));
     println!(
-        "aegis-256    (aes_wasm)    : {}",
+        "aegis-256    (this crate) : {}",
+        res.throughput(m.len() as _)
+    );
+
+    let res = bench.run(options, || test_aegis128l_rust(&mut m));
+    println!(
+        "aegis-128l   (aegis)      : {}",
+        res.throughput(m.len() as _)
+    );
+
+    let res = bench.run(options, || test_aegis128l(&mut m));
+    println!(
+        "aegis-128l   (this crate) : {}",
+        res.throughput(m.len() as _)
+    );
+
+    let res = bench.run(options, || test_aes128ctr_rust(&mut m));
+    println!(
+        "aes128-ctr   (ctr)        : {}",
         res.throughput(m.len() as _)
     );
 
     let res = bench.run(options, || test_aes128ctr(&mut m));
     println!(
-        "aes-128-ctr  (aes_wasm)    : {}",
+        "aes128-ctr   (this crate) : {}",
+        res.throughput(m.len() as _)
+    );
+
+    let res = bench.run(options, || test_cmac_aes128_rust(&mut m));
+    println!(
+        "cmac-aes128  (cmac)       : {}",
         res.throughput(m.len() as _)
     );
 
     let res = bench.run(options, || test_cmac_aes128(&mut m));
     println!(
-        "cmac-aes-128 (aes_wasm)    : {}",
+        "cmac-aes128  (this crate) : {}",
         res.throughput(m.len() as _)
     );
 }

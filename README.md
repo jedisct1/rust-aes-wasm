@@ -12,11 +12,11 @@
 
 This is a set of AES-based constructions (AEAD, stream cipher, MAC) for WebAssembly applications written in Rust.
 
-The AES round function is not protected against timing attacks, but these implementations are significantly faster than other crates on WebAssembly.
-
-They are also trivial to use.
+They are trivial to use and this crate has zero dependencies.
 
 # Benchmarks
+
+Benchmarks can be run with the `cargo wasi bench` command.
 
 Performance results using Wasmtime 9.0.1 on Apple M1
 
@@ -33,3 +33,6 @@ Performance results using Wasmtime 9.0.1 on Apple M1
 | cmac-aes-128 | THIS CRATE | 232.41 M/s |
 | aegis-256    | THIS CRATE | 475.12 M/s |
 | aegis-128l   | THIS CRATE | 697.36 M/s |
+
+
+
