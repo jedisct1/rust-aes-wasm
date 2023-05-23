@@ -23,9 +23,9 @@ Performance results using Wasmtime 9.0.1 on Apple M1
 | algorithm   | crate        | throughput |
 | ----------- | ------------ | ---------- |
 | aes256-gcm  | (aes crate)  | 49.63 M/s  |
-| aes256-gcm  | (this crate) | 61.55 M/s  |
+| aes256-gcm  | (this crate) | 112.81 M/s |
 | aes128-gcm  | (aes crate)  | 59.87 M/s  |
-| aes128-gcm  | (this crate) | 61.63 M/s  |
+| aes128-gcm  | (this crate) | 112.24 M/s |
 | aes256-ocb  | (this crate) | 168.43 M/s |
 | aes128-ocb  | (this crate) | 215.23 M/s |
 | aegis-256   | (this crate) | 478.57 M/s |
