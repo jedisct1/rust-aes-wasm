@@ -1,0 +1,18 @@
+[package]
+name = "aes-wasm"
+version = "0.1.0"
+edition = "2021"
+readme = "README.md"
+license = "MIT"
+license-file = "LICENSE"
+repository = "https://github.com/jedisct1/rust-aes-wasm"
+authors = ["Frank Denis <github@pureftpd.org>"]
+
+[dev-dependencies]
+benchmark-simple = "0.1.7"
+aegis = { version = "0.3.0" }
+aes-gcm = "0.10.1"
+
+[[bench]]
+name = "benchmark"
+harness = false
