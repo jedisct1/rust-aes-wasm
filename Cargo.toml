@@ -6,6 +6,7 @@ readme = "README.md"
 license = "MIT"
 repository = "https://github.com/jedisct1/rust-aes-wasm"
 authors = ["Frank Denis <github@pureftpd.org>"]
+description = "AES-GCM, AES-OCB, AEGIS, AES-CTR, CMAC-AES for WebAssembly"
 
 [dev-dependencies]
 benchmark-simple = "0.1.7"
