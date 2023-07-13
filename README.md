@@ -32,7 +32,7 @@ Performance results using Wasmtime 9.0.1 on Apple M1
 | aes256-ocb  |  *this crate*   | 168.43 M/s |
 | aes128-ocb  |  *this crate*   | 215.23 M/s |
 | aegis-256   |  *this crate*   | 478.57 M/s |
-| aegis-128l  | (`aegis` crate) |  62.84 M/s |
+| aegis-128l  | (`aegis` crate) | 533.85 M/s |
 | aegis-128l  |  *this crate*   | 695.85 M/s |
 | aes128-ctr  |  (`ctr` crate)  | 104.63 M/s |
 | aes128-ctr  |  *this crate*   | 214.81 M/s |
@@ -50,7 +50,7 @@ Performance results using Wasmtime 9.0.1 on Ryzen 7
 | aes256-ocb  |  *this crate*   | 200.93 M/s |
 | aes128-ocb  |  *this crate*   | 260.56 M/s |
 | aegis-256   |  *this crate*   | 497.97 M/s |
-| aegis-128l  | (`aegis` crate) |  73.15 M/s |
+| aegis-128l  | (`aegis` crate) | 537.49 M/s |
 | aegis-128l  |  *this crate*   | 696.61 M/s |
 | aes128-ctr  |  (`ctr` crate)  | 151.26 M/s |
 | aes128-ctr  |  *this crate*   | 275.51 M/s |
