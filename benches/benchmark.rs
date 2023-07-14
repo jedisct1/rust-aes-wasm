@@ -28,7 +28,7 @@ fn test_aes128gcm_rust(m: &mut [u8]) {
 fn test_aegis128l_rust(m: &mut [u8]) {
     let key = [0u8; 16];
     let nonce = [0u8; 16];
-    let state = Aegis128L::new(&nonce, &key);
+    let state = Aegis128L::<16>::new(&nonce, &key);
     black_box(state.encrypt(m, &[]));
 }
 

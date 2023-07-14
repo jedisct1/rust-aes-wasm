@@ -1,6 +1,6 @@
 [package]
 name = "aes-wasm"
-version = "0.1.4"
+version = "0.1.5"
 edition = "2021"
 readme = "README.md"
 license = "MIT"
@@ -10,9 +10,9 @@ description = "AES-GCM, AES-OCB, AEGIS, AES-CTR, CMAC-AES for WebAssembly"
 keywords = ["aes-gcm", "aes-ctr", "cmac", "wasm", "webassembly"]
 
 [dev-dependencies]
-benchmark-simple = "0.1.7"
-aegis = { version = "0.3.0" }
-aes-gcm = "0.10.1"
+benchmark-simple = "0.1.8"
+aegis = "0.4.3"
+aes-gcm = "0.10.2"
 cmac = "0.7.2"
 ctr = "0.9.2"
 
