@@ -1,6 +1,6 @@
 const std = @import("std");
 const Aes128Gcm = std.crypto.aead.aes_gcm.Aes128Gcm;
-const Aes256Gcm = std.crypto.aead.aes_gcm.Aes128Gcm;
+const Aes256Gcm = std.crypto.aead.aes_gcm.Aes256Gcm;
 const Aes128Ocb = std.crypto.aead.aes_ocb.Aes128Ocb;
 const Aes256Ocb = std.crypto.aead.aes_ocb.Aes256Ocb;
 const Aegis128L = std.crypto.aead.aegis.Aegis128L_256;
