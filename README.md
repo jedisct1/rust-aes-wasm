@@ -26,16 +26,16 @@ Performance results using Wasmtime 9.0.1 on Apple M1
 | algorithm   |      crate      | throughput |
 | :---------- | :-------------: | ---------: |
 | aes256-gcm  |  (`aes` crate)  |  49.63 M/s |
-| aes256-gcm  |  *this crate*   | 112.81 M/s |
+| aes256-gcm  |  *this crate*   |  98.86 M/s |
 | aes128-gcm  |  (`aes` crate)  |  59.87 M/s |
-| aes128-gcm  |  *this crate*   | 112.24 M/s |
+| aes128-gcm  |  *this crate*   | 115.47 M/s |
 | aes256-ocb  |  *this crate*   | 168.43 M/s |
 | aes128-ocb  |  *this crate*   | 215.23 M/s |
 | aegis-256   |  *this crate*   | 478.57 M/s |
 | aegis-128l  | (`aegis` crate) | 533.85 M/s |
 | aegis-128l  |  *this crate*   | 695.85 M/s |
 | aes128-ctr  |  (`ctr` crate)  | 104.63 M/s |
-| aes128-ctr  |  *this crate*   | 214.81 M/s |
+| aes128-ctr  |  *this crate*   | 217.10 M/s |
 | cmac-aes128 | (`cmac` crate)  |  53.99 M/s |
 | cmac-aes128 |  *this crate*   | 233.34 M/s |
 
@@ -44,10 +44,10 @@ Performance results using Wasmtime 9.0.1 on Ryzen 7
 | algorithm   |      crate      | throughput |
 | :---------- | :-------------: | ---------: |
 | aes256-gcm  |  (`aes` crate)  |  63.79 M/s |
-| aes256-gcm  |  *this crate*   | 149.01 M/s |
+| aes256-gcm  |  *this crate*   | 129.44 M/s |
 | aes128-gcm  |  (`aes` crate)  |  75.09 M/s |
 | aes128-gcm  |  *this crate*   | 149.31 M/s |
-| aes256-ocb  |  *this crate*   | 200.93 M/s |
+| aes256-ocb  |  *this crate*   | 205.39 M/s |
 | aes128-ocb  |  *this crate*   | 260.56 M/s |
 | aegis-256   |  *this crate*   | 497.97 M/s |
 | aegis-128l  | (`aegis` crate) | 537.49 M/s |
