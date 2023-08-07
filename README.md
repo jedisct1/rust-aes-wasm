@@ -19,7 +19,7 @@ They are trivial to use and this crate has zero dependencies.
 
 # Benchmarks
 
-Benchmarks can be run with the `cargo wasi bench` command.
+Benchmarks can be run with the `cargo wasix bench` command.
 
 Performance results using Wasmtime 9.0.1 on Apple M1
 
