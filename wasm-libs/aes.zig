@@ -215,7 +215,7 @@ export fn aes128ctr(
     k: [*c]const [16]u8,
 ) callconv(.C) i32 {
     const aes = std.crypto.core.aes.Aes128.initEnc(k.*);
-    modes.ctr(@TypeOf(aes), aes, out[0..out_len], in[0..in_len], iv.*, std.builtin.Endian.Big);
+    modes.ctr(@TypeOf(aes), aes, out[0..out_len], in[0..in_len], iv.*, std.builtin.Endian.big);
     return 0;
 }
 
@@ -229,8 +229,8 @@ export fn aes256ctr(
     iv: [*c]const [16]u8,
     k: [*c]const [32]u8,
 ) callconv(.C) i32 {
-    var aes = std.crypto.core.aes.Aes256.initEnc(k.*);
-    modes.ctr(@TypeOf(aes), aes, out[0..out_len], in[0..in_len], iv.*, std.builtin.Endian.Big);
+    const aes = std.crypto.core.aes.Aes256.initEnc(k.*);
+    modes.ctr(@TypeOf(aes), aes, out[0..out_len], in[0..in_len], iv.*, std.builtin.Endian.big);
     return 0;
 }
 
