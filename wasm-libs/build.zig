@@ -8,7 +8,7 @@ pub fn build(b: *std.Build) void {
         .root_source_file = .{ .path = "aes.zig" },
         .target = target,
         .optimize = optimize,
+        .strip = true,
     });
-    lib.strip = true;
     b.installArtifact(lib);
 }
