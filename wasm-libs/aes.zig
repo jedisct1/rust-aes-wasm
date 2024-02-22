@@ -8,9 +8,7 @@ const Aegis256 = std.crypto.aead.aegis.Aegis256_256;
 const CmacAes128 = std.crypto.auth.cmac.CmacAes128;
 const modes = std.crypto.core.modes;
 
-pub const std_options = struct {
-    pub const side_channels_mitigations = .none;
-};
+pub const std_options = .{ .side_channels_mitigations = .none };
 
 // AES128-GCM
 

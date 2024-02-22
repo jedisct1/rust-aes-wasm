@@ -10,7 +10,7 @@ description = "AES-GCM, AES-OCB, AEGIS, AES-CTR, CMAC-AES for WebAssembly"
 keywords = ["aes-gcm", "aes-ctr", "cmac", "wasm", "webassembly"]
 
 [dev-dependencies]
-benchmark-simple = "0.1.8"
+benchmark-simple = "0.1.9"
 aegis = "0.6.2"
 aes-gcm = "0.10.3"
 cmac = "0.7.2"
