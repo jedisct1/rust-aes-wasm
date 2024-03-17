@@ -1,3 +1,5 @@
+#![doc = include_str!("../README.md")]
+
 use core::fmt::{self, Display};
 
 #[derive(Debug, Copy, Clone, Eq, PartialEq)]
