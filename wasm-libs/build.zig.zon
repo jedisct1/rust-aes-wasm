@@ -1,0 +1,17 @@
+.{
+    .name = "wasm-libs",
+
+    .version = "0.0.0",
+
+    .dependencies = .{
+        .cbc = .{
+            .url = "https://github.com/jedisct1/zig-cbc/archive/refs/tags/0.1.2.tar.gz",
+            .hash = "122050482956917066c64d32b571ae80f7291fa5c5a12ecf05e5a0bf65600eff4d65",
+        },
+    },
+    .paths = .{
+        "build.zig",
+        "build.zig.zon",
+        "aes.zig",
+    },
+}
