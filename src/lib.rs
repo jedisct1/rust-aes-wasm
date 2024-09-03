@@ -24,6 +24,7 @@ pub mod aes128cbc;
 pub mod aes128ctr;
 pub mod aes128gcm;
 pub mod aes128ocb;
+pub mod aes256cbc;
 pub mod aes256ctr;
 pub mod aes256gcm;
 pub mod aes256ocb;

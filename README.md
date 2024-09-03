@@ -11,6 +11,8 @@
 * AES-256-OCB
 * AES-128-GCM
 * AES-256-GCM
+* AES-128-CBC with PKCS#7 padding
+* AES-256-CBC with PKCS#7 padding
 * CMAC-AES-128
 
 This is a set of AES-based constructions (AEAD, stream cipher, MAC) for WebAssembly applications written in Rust.
@@ -31,6 +33,8 @@ Performance results using Wasmtime 9.0.1 on Apple M1
 | aes128-gcm  |  *this crate*   | 115.47 M/s |
 | aes256-ocb  |  *this crate*   | 168.43 M/s |
 | aes128-ocb  |  *this crate*   | 215.23 M/s |
+| aes-128-cbc |  *this crate*   | 225.63 M/s |
+| aes-256-cbc |  *this crate*   | 171.89 M/s |
 | aegis-256   |  *this crate*   | 478.57 M/s |
 | aegis-128l  | (`aegis` crate) | 533.85 M/s |
 | aegis-128l  |  *this crate*   | 695.85 M/s |

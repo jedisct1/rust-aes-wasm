@@ -40,6 +40,20 @@ fn test_aes128ctr_rust(m: &mut [u8]) {
     black_box(m2);
 }
 
+fn test_aes128cbc(m: &mut [u8]) {
+    use aes128cbc::*;
+    let key = Key::default();
+    let iv = IV::default();
+    black_box(encrypt(m, &key, iv));
+}
+
+fn test_aes256cbc(m: &mut [u8]) {
+    use aes256cbc::*;
+    let key = Key::default();
+    let iv = IV::default();
+    black_box(encrypt(m, &key, iv));
+}
+
 fn test_aes128gcm(m: &mut [u8]) {
     use aes128gcm::*;
     let key = Key::default();
@@ -139,6 +153,18 @@ fn main() {
     let res = bench.run(options, || test_aes128gcm(&mut m));
     println!(
         "aes128-gcm   (this crate) : {}",
+        res.throughput(m.len() as _)
+    );
+
+    let res = bench.run(options, || test_aes128cbc(&mut m));
+    println!(
+        "aes128-cbc   (this crate) : {}",
+        res.throughput(m.len() as _)
+    );
+
+    let res = bench.run(options, || test_aes256cbc(&mut m));
+    println!(
+        "aes256-cbc   (this crate) : {}",
         res.throughput(m.len() as _)
     );
 

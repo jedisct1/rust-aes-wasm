@@ -170,6 +170,34 @@ export fn aes128cbc_decrypt(
     return std.math.cast(i32, trimmed.len) orelse return -1;
 }
 
+// AES256-CBC
+
+export fn aes256cbc_encrypt(
+    c: [*c]u8,
+    c_len: usize,
+    m: [*c]const u8,
+    m_len: usize,
+    iv: [*c]const [16]u8,
+    k: [*c]const [32]u8,
+) callconv(.C) i32 {
+    const z = Aes256Cbc.init(k.*);
+    z.encrypt(c[0..c_len], m[0..m_len], iv.*);
+    return 0;
+}
+
+export fn aes256cbc_decrypt(
+    m: [*c]u8,
+    m_len: usize,
+    c: [*c]const u8,
+    c_len: usize,
+    iv: [*c]const [16]u8,
+    k: [*c]const [32]u8,
+) callconv(.C) i32 {
+    const z = Aes256Cbc.init(k.*);
+    const trimmed = z.decryptAndTrim(m[0..m_len], c[0..c_len], iv.*) catch return -1;
+    return std.math.cast(i32, trimmed.len) orelse return -1;
+}
+
 // AEGIS-128L
 
 export fn aegis128l_encrypt(
