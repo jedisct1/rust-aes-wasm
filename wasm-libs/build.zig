@@ -30,5 +30,7 @@ pub fn build(b: *std.Build) void {
     exe.rdynamic = true;
     exe.wasi_exec_model = .reactor;
     exe.entry = .disabled;
+    exe.root_module.addImport("cbc", cbc.module("cbc"));
+    exe.linkLibrary(cbc.artifact("cbc"));
     b.installArtifact(exe);
 }

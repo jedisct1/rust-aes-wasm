@@ -20,6 +20,7 @@ impl Display for Error {
 
 pub mod aegis128l;
 pub mod aegis256;
+pub mod aes128cbc;
 pub mod aes128ctr;
 pub mod aes128gcm;
 pub mod aes128ocb;

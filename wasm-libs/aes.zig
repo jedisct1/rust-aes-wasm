@@ -1,4 +1,6 @@
 const std = @import("std");
+const cbc = @import("cbc");
+
 const Aes128Gcm = std.crypto.aead.aes_gcm.Aes128Gcm;
 const Aes256Gcm = std.crypto.aead.aes_gcm.Aes256Gcm;
 const Aes128Ocb = std.crypto.aead.aes_ocb.Aes128Ocb;
@@ -6,6 +8,8 @@ const Aes256Ocb = std.crypto.aead.aes_ocb.Aes256Ocb;
 const Aegis128L = std.crypto.aead.aegis.Aegis128L_256;
 const Aegis256 = std.crypto.aead.aegis.Aegis256_256;
 const CmacAes128 = std.crypto.auth.cmac.CmacAes128;
+const Aes128Cbc = cbc.CBC(std.crypto.core.aes.Aes128);
+const Aes256Cbc = cbc.CBC(std.crypto.core.aes.Aes256);
 const modes = std.crypto.core.modes;
 
 pub const std_options = .{ .side_channels_mitigations = .none };
@@ -136,6 +140,34 @@ export fn aes256ocb_decrypt(
 ) callconv(.C) i32 {
     Aes256Ocb.decrypt(m[0..m_len], c[0..c_len], tag.*, ad[0..ad_len], nonce.*, k.*) catch return -1;
     return 0;
+}
+
+// AES128-CBC
+
+export fn aes128cbc_encrypt(
+    c: [*c]u8,
+    c_len: usize,
+    m: [*c]const u8,
+    m_len: usize,
+    iv: [*c]const [16]u8,
+    k: [*c]const [16]u8,
+) callconv(.C) i32 {
+    const z = Aes128Cbc.init(k.*);
+    z.encrypt(c[0..c_len], m[0..m_len], iv.*);
+    return 0;
+}
+
+export fn aes128cbc_decrypt(
+    m: [*c]u8,
+    m_len: usize,
+    c: [*c]const u8,
+    c_len: usize,
+    iv: [*c]const [16]u8,
+    k: [*c]const [16]u8,
+) callconv(.C) i32 {
+    const z = Aes128Cbc.init(k.*);
+    const trimmed = z.decryptAndTrim(m[0..m_len], c[0..c_len], iv.*) catch return -1;
+    return std.math.cast(i32, trimmed.len) orelse return -1;
 }
 
 // AEGIS-128L
