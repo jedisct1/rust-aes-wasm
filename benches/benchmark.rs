@@ -8,6 +8,7 @@ use aes_gcm::{aead::Aead as _, aead::KeyInit as _, Aes128Gcm, Aes256Gcm};
 use cmac::Cmac;
 
 use benchmark_simple::*;
+use ctr::cipher::BlockEncryptMut;
 
 type Aes128Ctr = ctr::Ctr64BE<aes::Aes128>;
 
@@ -45,6 +46,40 @@ fn test_aes128cbc(m: &mut [u8]) {
     let key = Key::default();
     let iv = IV::default();
     black_box(encrypt(m, &key, iv));
+}
+
+fn test_aes128cbc_rust(m: &mut [u8]) {
+    use aes::cipher::block_padding;
+    use cbc::Encryptor;
+    let key = [0u8; 16];
+    let iv = [0u8; 16];
+    let e: Encryptor<aes::Aes128> = Encryptor::new(&key.into(), &iv.into());
+    let mut buf = m.to_vec();
+    buf.push(0);
+    while buf.len() % 16 != 0 {
+        buf.push(0);
+    }
+    black_box(
+        e.encrypt_padded_b2b_mut::<block_padding::Pkcs7>(&m, &mut buf)
+            .unwrap(),
+    );
+}
+
+fn test_aes256cbc_rust(m: &mut [u8]) {
+    use aes::cipher::block_padding;
+    use cbc::Encryptor;
+    let key = [0u8; 32];
+    let iv = [0u8; 16];
+    let e: Encryptor<aes::Aes256> = Encryptor::new(&key.into(), &iv.into());
+    let mut buf = m.to_vec();
+    buf.push(0);
+    while buf.len() % 16 != 0 {
+        buf.push(0);
+    }
+    black_box(
+        e.encrypt_padded_b2b_mut::<block_padding::Pkcs7>(m, &mut buf)
+            .unwrap(),
+    );
 }
 
 fn test_aes256cbc(m: &mut [u8]) {
@@ -156,9 +191,21 @@ fn main() {
         res.throughput(m.len() as _)
     );
 
+    let res = bench.run(options, || test_aes128cbc_rust(&mut m));
+    println!(
+        "aes128-cbc   (cbc crate)  : {}",
+        res.throughput(m.len() as _)
+    );
+
     let res = bench.run(options, || test_aes128cbc(&mut m));
     println!(
         "aes128-cbc   (this crate) : {}",
+        res.throughput(m.len() as _)
+    );
+
+    let res = bench.run(options, || test_aes256cbc_rust(&mut m));
+    println!(
+        "aes256-cbc   (cbc crate)  : {}",
         res.throughput(m.len() as _)
     );
 
