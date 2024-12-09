@@ -12,7 +12,7 @@ const Aes128Cbc = cbc.CBC(std.crypto.core.aes.Aes128);
 const Aes256Cbc = cbc.CBC(std.crypto.core.aes.Aes256);
 const modes = std.crypto.core.modes;
 
-pub const std_options = .{ .side_channels_mitigations = .none };
+pub const std_options = std.Options{ .side_channels_mitigations = .none };
 
 // AES128-GCM
 
