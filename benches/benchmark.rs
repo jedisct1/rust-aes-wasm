@@ -1,6 +1,7 @@
 use aes_wasm::*;
 
 use aegis::aegis128l::Aegis128L;
+use aegis::aegis256::Aegis256;
 use aes::cipher::{KeyIvInit, StreamCipher};
 use aes_gcm::aead::Payload;
 use aes_gcm::aes;
@@ -124,6 +125,13 @@ fn test_aes256ocb(m: &mut [u8]) {
     black_box(encrypt_detached(m, [], &key, nonce));
 }
 
+fn test_aegis256_rust(m: &mut [u8]) {
+    let key = [0u8; 32];
+    let nonce = [0u8; 32];
+    let state = Aegis256::<16>::new(&nonce, &key);
+    black_box(state.encrypt(m, &[]));
+}
+
 fn test_aegis256(m: &mut [u8]) {
     use aegis256::*;
     let key = Key::default();
@@ -224,6 +232,12 @@ fn main() {
     let res = bench.run(options, || test_aes128ocb(&mut m));
     println!(
         "aes128-ocb   (this crate) : {}",
+        res.throughput(m.len() as _)
+    );
+
+    let res = bench.run(options, || test_aegis256_rust(&mut m));
+    println!(
+        "aegis-256    (aegis)      : {}",
         res.throughput(m.len() as _)
     );
 
