@@ -1,6 +1,6 @@
 mod zig {
     extern "C" {
-        pub fn aegis256_encrypt(
+        pub fn _aegis256_encrypt(
             c: *mut u8,
             c_len: usize,
             tag: *mut u8,
@@ -12,7 +12,7 @@ mod zig {
             k: *const u8,
         ) -> i32;
 
-        pub fn aegis256_decrypt(
+        pub fn _aegis256_decrypt(
             m: *mut u8,
             m_len: usize,
             c: *const u8,
@@ -48,7 +48,7 @@ pub fn encrypt_detached(
     let mut ciphertext = Vec::with_capacity(ciphertext_len);
     let mut tag = Tag::default();
     unsafe {
-        zig::aegis256_encrypt(
+        zig::_aegis256_encrypt(
             ciphertext.as_mut_ptr(),
             ciphertext_len,
             tag.as_mut_ptr(),
@@ -82,7 +82,7 @@ pub fn decrypt_detached(
     let msg_len = ciphertext.len();
     let mut msg = Vec::with_capacity(msg_len);
     unsafe {
-        let res = zig::aegis256_decrypt(
+        let res = zig::_aegis256_decrypt(
             msg.as_mut_ptr(),
             msg_len,
             ciphertext.as_ptr(),

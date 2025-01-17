@@ -200,7 +200,7 @@ export fn aes256cbc_decrypt(
 
 // AEGIS-128L
 
-export fn aegis128l_encrypt(
+export fn _aegis128l_encrypt(
     c: [*c]u8,
     c_len: usize,
     tag: [*c][Aegis128L.tag_length]u8,
@@ -215,7 +215,7 @@ export fn aegis128l_encrypt(
     return 0;
 }
 
-export fn aegis128l_decrypt(
+export fn _aegis128l_decrypt(
     m: [*c]u8,
     m_len: usize,
     c: [*c]const u8,
@@ -232,7 +232,7 @@ export fn aegis128l_decrypt(
 
 // AEGIS-256
 
-export fn aegis256_encrypt(
+export fn _aegis256_encrypt(
     c: [*c]u8,
     c_len: usize,
     tag: [*c][Aegis256.tag_length]u8,
@@ -247,7 +247,7 @@ export fn aegis256_encrypt(
     return 0;
 }
 
-export fn aegis256_decrypt(
+export fn _aegis256_decrypt(
     m: [*c]u8,
     m_len: usize,
     c: [*c]const u8,
