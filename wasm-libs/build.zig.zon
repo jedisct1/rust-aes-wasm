@@ -1,7 +1,9 @@
 .{
-    .name = "wasm-libs",
+    .name = .wasm_libs,
 
     .version = "0.0.0",
+
+    .fingerprint = 0x1512050883ac07d4,
 
     .dependencies = .{
         .cbc = .{
