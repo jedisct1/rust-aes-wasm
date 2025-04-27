@@ -61,7 +61,7 @@ fn test_aes128cbc_rust(m: &mut [u8]) {
         buf.push(0);
     }
     black_box(
-        e.encrypt_padded_b2b_mut::<block_padding::Pkcs7>(&m, &mut buf)
+        e.encrypt_padded_b2b_mut::<block_padding::Pkcs7>(m, &mut buf)
             .unwrap(),
     );
 }
