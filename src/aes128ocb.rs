@@ -28,14 +28,46 @@ mod zig {
 
 pub use crate::*;
 
+/// The length of the key in bytes.
+///
+/// This constant is used for key array sizing.
 pub const KEY_LEN: usize = 16;
+/// The length of the authentication tag in bytes.
+///
+/// This constant is used for tag array sizing.
 pub const TAG_LEN: usize = 16;
+/// The length of the nonce in bytes.
+///
+/// This constant is used for nonce array sizing.
 pub const NONCE_LEN: usize = 12;
 
+/// Key type for AES-128-OCB (16 bytes).
 pub type Key = [u8; KEY_LEN];
+/// Tag type for AES-128-OCB (16 bytes).
 pub type Tag = [u8; TAG_LEN];
+/// Nonce type for AES-128-OCB (12 bytes).
 pub type Nonce = [u8; NONCE_LEN];
 
+/// Encrypts a message and returns the ciphertext and authentication tag separately (detached).
+///
+/// # Arguments
+/// * `msg` - The plaintext message to encrypt.
+/// * `ad` - Additional authenticated data (AAD).
+/// * `key` - Reference to the secret key.
+/// * `nonce` - Nonce value.
+///
+/// # Returns
+/// Tuple of ciphertext and tag.
+///
+/// # Example
+/// ```
+/// use aes_wasm::aes128ocb::{encrypt_detached, Key, Nonce};
+/// let key = Key::default();
+/// let nonce = Nonce::default();
+/// let msg = b"hello";
+/// let ad = b"ad";
+/// let (ciphertext, tag) = encrypt_detached(msg, ad, &key, nonce);
+/// ```
 pub fn encrypt_detached(
     msg: impl AsRef<[u8]>,
     ad: impl AsRef<[u8]>,
@@ -64,12 +96,54 @@ pub fn encrypt_detached(
     (ciphertext, tag)
 }
 
+/// Encrypts a message and returns the ciphertext with the authentication tag appended.
+///
+/// # Arguments
+/// * `msg` - The plaintext message to encrypt.
+/// * `ad` - Additional authenticated data (AAD).
+/// * `key` - Reference to the secret key.
+/// * `nonce` - Nonce value.
+///
+/// # Returns
+/// Ciphertext with tag appended.
+///
+/// # Example
+/// ```
+/// use aes_wasm::aes128ocb::{encrypt, Key, Nonce};
+/// let key = Key::default();
+/// let nonce = Nonce::default();
+/// let msg = b"hello";
+/// let ad = b"ad";
+/// let ciphertext = encrypt(msg, ad, &key, nonce);
+/// ```
 pub fn encrypt(msg: impl AsRef<[u8]>, ad: impl AsRef<[u8]>, key: &Key, nonce: Nonce) -> Vec<u8> {
     let mut res = encrypt_detached(msg, ad, key, nonce);
     res.0.extend_from_slice(res.1.as_ref());
     res.0
 }
 
+/// Decrypts a ciphertext and tag, returning the plaintext if verification succeeds.
+///
+/// # Arguments
+/// * `ciphertext` - The ciphertext to decrypt.
+/// * `tag` - The authentication tag.
+/// * `ad` - Additional authenticated data (AAD).
+/// * `key` - Reference to the secret key.
+/// * `nonce` - Nonce value.
+///
+/// # Returns
+/// `Ok(plaintext)` if verification succeeds, or `Err(Error)` if it fails.
+///
+/// # Example
+/// ```
+/// use aes_wasm::aes128ocb::{encrypt_detached, decrypt_detached, Key, Nonce};
+/// let key = Key::default();
+/// let nonce = Nonce::default();
+/// let msg = b"hello";
+/// let ad = b"ad";
+/// let (ciphertext, tag) = encrypt_detached(msg, ad, &key, nonce);
+/// let plaintext = decrypt_detached(ciphertext, &tag, ad, &key, nonce).unwrap();
+/// ```
 pub fn decrypt_detached(
     ciphertext: impl AsRef<[u8]>,
     tag: &Tag,
@@ -101,6 +175,27 @@ pub fn decrypt_detached(
     Ok(msg)
 }
 
+/// Decrypts a ciphertext with tag appended, returning the plaintext if verification succeeds.
+///
+/// # Arguments
+/// * `ciphertext_and_tag` - Ciphertext with tag appended.
+/// * `ad` - Additional authenticated data (AAD).
+/// * `key` - Reference to the secret key.
+/// * `nonce` - Nonce value.
+///
+/// # Returns
+/// `Ok(plaintext)` if verification succeeds, or `Err(Error)` if it fails.
+///
+/// # Example
+/// ```
+/// use aes_wasm::aes128ocb::{encrypt, decrypt, Key, Nonce};
+/// let key = Key::default();
+/// let nonce = Nonce::default();
+/// let msg = b"hello";
+/// let ad = b"ad";
+/// let ciphertext = encrypt(msg, ad, &key, nonce);
+/// let plaintext = decrypt(ciphertext, ad, &key, nonce).unwrap();
+/// ```
 pub fn decrypt(
     ciphertext_and_tag: impl AsRef<[u8]>,
     ad: impl AsRef<[u8]>,

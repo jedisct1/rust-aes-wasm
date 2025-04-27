@@ -22,14 +22,44 @@ mod zig {
 
 pub use crate::*;
 
+/// The length of the key in bytes.
+///
+/// This constant is used for key array sizing.
 pub const KEY_LEN: usize = 32;
+/// The length of the authentication tag in bytes (not used for authentication, but for block size).
+///
+/// This constant is used for tag array sizing.
 pub const TAG_LEN: usize = 16;
+/// The length of the IV in bytes.
+///
+/// This constant is used for IV array sizing.
 pub const IV_LEN: usize = 16;
 
+/// Key type for AES-256-CBC (32 bytes).
 pub type Key = [u8; KEY_LEN];
+/// Tag type for AES-256-CBC (16 bytes, block size).
 pub type Tag = [u8; TAG_LEN];
+/// IV type for AES-256-CBC (16 bytes).
 pub type IV = [u8; IV_LEN];
 
+/// Encrypts a message using AES-256 in CBC mode.
+///
+/// # Arguments
+/// * `msg` - The plaintext message to encrypt.
+/// * `key` - Reference to the secret key.
+/// * `iv` - Initialization vector.
+///
+/// # Returns
+/// Ciphertext as a `Vec<u8>`.
+///
+/// # Example
+/// ```
+/// use aes_wasm::aes256cbc::{encrypt, Key, IV};
+/// let key = Key::default();
+/// let iv = IV::default();
+/// let msg = b"hello";
+/// let ciphertext = encrypt(msg, &key, iv);
+/// ```
 pub fn encrypt(msg: impl AsRef<[u8]>, key: &Key, iv: IV) -> Vec<u8> {
     let msg = msg.as_ref();
     let ciphertext_len = (msg.len() + 16) & !15;
@@ -48,6 +78,25 @@ pub fn encrypt(msg: impl AsRef<[u8]>, key: &Key, iv: IV) -> Vec<u8> {
     ciphertext
 }
 
+/// Decrypts a ciphertext using AES-256 in CBC mode.
+///
+/// # Arguments
+/// * `ciphertext` - The ciphertext to decrypt.
+/// * `key` - Reference to the secret key.
+/// * `iv` - Initialization vector.
+///
+/// # Returns
+/// `Ok(plaintext)` if decryption succeeds, or `Err(Error)` if it fails.
+///
+/// # Example
+/// ```
+/// use aes_wasm::aes256cbc::{encrypt, decrypt, Key, IV};
+/// let key = Key::default();
+/// let iv = IV::default();
+/// let msg = b"hello";
+/// let ciphertext = encrypt(msg, &key, iv);
+/// let plaintext = decrypt(ciphertext, &key, iv).unwrap();
+/// ```
 pub fn decrypt(ciphertext: impl AsRef<[u8]>, key: &Key, iv: IV) -> Result<Vec<u8>, Error> {
     let ciphertext = ciphertext.as_ref();
     let msg_max_len = ciphertext
