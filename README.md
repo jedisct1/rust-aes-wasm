@@ -3,8 +3,8 @@
 
 # Fast(er) AES-based constructions for Rust and WebAssembly
 
-* AEGIS-128L
-* AEGIS-256
+* AEGIS-128L, AEGIS-128X2, AEGIS-128X2
+* AEGIS-256, AEGIS-256X2, AEGIS-256X4
 * AES-128-CTR
 * AES-256-CTR
 * AES-128-OCB

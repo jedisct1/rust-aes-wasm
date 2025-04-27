@@ -111,6 +111,20 @@ fn test_aegis128l(m: &mut [u8]) {
     black_box(encrypt_detached(m, [], &key, nonce));
 }
 
+fn test_aegis128x2(m: &mut [u8]) {
+    use aegis128x2::*;
+    let key = Key::default();
+    let nonce = Nonce::default();
+    black_box(encrypt_detached(m, [], &key, nonce));
+}
+
+fn test_aegis128x4(m: &mut [u8]) {
+    use aegis128x4::*;
+    let key = Key::default();
+    let nonce = Nonce::default();
+    black_box(encrypt_detached(m, [], &key, nonce));
+}
+
 fn test_aes256gcm(m: &mut [u8]) {
     use aes256gcm::*;
     let key = Key::default();
@@ -134,6 +148,20 @@ fn test_aegis256_rust(m: &mut [u8]) {
 
 fn test_aegis256(m: &mut [u8]) {
     use aegis256::*;
+    let key = Key::default();
+    let nonce = Nonce::default();
+    black_box(encrypt_detached(m, [], &key, nonce));
+}
+
+fn test_aegis256x2(m: &mut [u8]) {
+    use aegis256x2::*;
+    let key = Key::default();
+    let nonce = Nonce::default();
+    black_box(encrypt_detached(m, [], &key, nonce));
+}
+
+fn test_aegis256x4(m: &mut [u8]) {
+    use aegis256x4::*;
     let key = Key::default();
     let nonce = Nonce::default();
     black_box(encrypt_detached(m, [], &key, nonce));
@@ -247,6 +275,18 @@ fn main() {
         res.throughput(m.len() as _)
     );
 
+    let res = bench.run(options, || test_aegis256x2(&mut m));
+    println!(
+        "aegis-256x2  (this crate) : {}",
+        res.throughput(m.len() as _)
+    );
+
+    let res = bench.run(options, || test_aegis256x4(&mut m));
+    println!(
+        "aegis-256x4  (this crate) : {}",
+        res.throughput(m.len() as _)
+    );
+
     let res = bench.run(options, || test_aegis128l_rust(&mut m));
     println!(
         "aegis-128l   (aegis)      : {}",
@@ -256,6 +296,18 @@ fn main() {
     let res = bench.run(options, || test_aegis128l(&mut m));
     println!(
         "aegis-128l   (this crate) : {}",
+        res.throughput(m.len() as _)
+    );
+
+    let res = bench.run(options, || test_aegis128x2(&mut m));
+    println!(
+        "aegis-128x2  (this crate) : {}",
+        res.throughput(m.len() as _)
+    );
+
+    let res = bench.run(options, || test_aegis128x4(&mut m));
+    println!(
+        "aegis-128x4  (this crate) : {}",
         res.throughput(m.len() as _)
     );
 
