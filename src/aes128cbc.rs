@@ -1,3 +1,18 @@
+//! AES-128-CBC block cipher for WASI (WebAssembly System Interface).
+//!
+//! Provides encryption and decryption using AES-128 in CBC mode with PKCS#7 padding.
+//!
+//! ## Example
+//! ```rust
+//! use aes_wasm::aes128cbc::{encrypt, decrypt, Key, IV};
+//! let key = Key::default();
+//! let iv = IV::default();
+//! let msg = b"hello";
+//! let ciphertext = encrypt(msg, &key, iv);
+//! let plaintext = decrypt(ciphertext, &key, iv).unwrap();
+//! assert_eq!(plaintext, msg);
+//! ```
+
 mod zig {
     extern "C" {
         pub fn aes128cbc_encrypt(

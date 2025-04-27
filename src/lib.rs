@@ -1,3 +1,21 @@
+//! # aes-wasm
+//!
+//! High-performance AEAD, stream cipher, and MAC primitives for WebAssembly/WASI.
+//!
+//! This crate provides a simple, dependency-free API for cryptography in WASI environments.
+//!
+//! ## Example: AES-128-GCM
+//! ```rust
+//! use aes_wasm::aes128gcm::{encrypt, decrypt, Key, Nonce};
+//! let key = Key::default();
+//! let nonce = Nonce::default();
+//! let msg = b"hello world";
+//! let ad = b"extra data";
+//! let ciphertext = encrypt(msg, ad, &key, nonce);
+//! let plaintext = decrypt(ciphertext, ad, &key, nonce).unwrap();
+//! assert_eq!(plaintext, msg);
+//! ```
+//!
 //! AEAD ciphers for WebAssembly, including AEGIS, AES-GCM, AES-OCB, AES-CBC, AES-CTR, and CMAC.
 //!
 //! This crate provides high-performance AEAD and MAC primitives for use in WebAssembly environments.

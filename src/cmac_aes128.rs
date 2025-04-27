@@ -1,3 +1,15 @@
+//! CMAC-AES-128 message authentication code for WASI (WebAssembly System Interface).
+//!
+//! Provides message authentication using AES-128 as a MAC (Cipher-based Message Authentication Code).
+//!
+//! ## Example
+//! ```rust
+//! use aes_wasm::cmac_aes128::{mac, Key};
+//! let key = Key::default();
+//! let msg = b"hello";
+//! let tag = mac(msg, &key);
+//! ```
+
 mod zig {
     extern "C" {
         pub fn cmac_aes128(tag: *mut u8, m: *const u8, m_len: usize, k: *const u8) -> i32;

@@ -1,3 +1,19 @@
+//! AES-128-OCB AEAD cipher for WASI (WebAssembly System Interface).
+//!
+//! Provides authenticated encryption and decryption using AES-128 in OCB mode.
+//!
+//! ## Example
+//! ```rust
+//! use aes_wasm::aes128ocb::{encrypt, decrypt, Key, Nonce};
+//! let key = Key::default();
+//! let nonce = Nonce::default();
+//! let msg = b"hello";
+//! let ad = b"ad";
+//! let ciphertext = encrypt(msg, ad, &key, nonce);
+//! let plaintext = decrypt(ciphertext, ad, &key, nonce).unwrap();
+//! assert_eq!(plaintext, msg);
+//! ```
+
 mod zig {
     extern "C" {
         pub fn aes128ocb_encrypt(

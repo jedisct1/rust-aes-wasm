@@ -1,3 +1,18 @@
+//! AES-128-CTR stream cipher for WASI (WebAssembly System Interface).
+//!
+//! Provides encryption and decryption using AES-128 in CTR mode.
+//!
+//! ## Example
+//! ```rust
+//! use aes_wasm::aes128ctr::{encrypt, decrypt, Key, IV};
+//! let key = Key::default();
+//! let iv = IV::default();
+//! let msg = b"hello";
+//! let ciphertext = encrypt(msg, &key, iv);
+//! let plaintext = decrypt(ciphertext, &key, iv);
+//! assert_eq!(plaintext, msg);
+//! ```
+
 mod zig {
     extern "C" {
         pub fn aes128ctr(

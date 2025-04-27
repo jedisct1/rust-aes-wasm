@@ -1,3 +1,19 @@
+//! AEGIS-128X2 AEAD cipher for WASI (WebAssembly System Interface).
+//!
+//! Provides authenticated encryption and decryption using the AEGIS-128X2 construction.
+//!
+//! ## Example
+//! ```rust
+//! use aes_wasm::aegis128x2::{encrypt, decrypt, Key, Nonce};
+//! let key = Key::default();
+//! let nonce = Nonce::default();
+//! let msg = b"hello";
+//! let ad = b"ad";
+//! let ciphertext = encrypt(msg, ad, &key, nonce);
+//! let plaintext = decrypt(ciphertext, ad, &key, nonce).unwrap();
+//! assert_eq!(plaintext, msg);
+//! ```
+
 mod zig {
     extern "C" {
         pub fn _aegis128x2_encrypt(
