@@ -30,7 +30,7 @@ export fn aes128gcm_encrypt(
     ad_len: usize,
     nonce: [*c]const [Aes128Gcm.nonce_length]u8,
     k: [*c]const [Aes128Gcm.key_length]u8,
-) callconv(.C) i32 {
+) callconv(.c) i32 {
     Aes128Gcm.encrypt(c[0..c_len], tag, m[0..m_len], ad[0..ad_len], nonce.*, k.*);
     return 0;
 }
@@ -45,7 +45,7 @@ export fn aes128gcm_decrypt(
     ad_len: usize,
     nonce: [*c]const [Aes128Gcm.nonce_length]u8,
     k: [*c]const [Aes128Gcm.key_length]u8,
-) callconv(.C) i32 {
+) callconv(.c) i32 {
     Aes128Gcm.decrypt(m[0..m_len], c[0..c_len], tag.*, ad[0..ad_len], nonce.*, k.*) catch return -1;
     return 0;
 }
@@ -62,7 +62,7 @@ export fn aes256gcm_encrypt(
     ad_len: usize,
     nonce: [*c]const [Aes256Gcm.nonce_length]u8,
     k: [*c]const [Aes256Gcm.key_length]u8,
-) callconv(.C) i32 {
+) callconv(.c) i32 {
     Aes256Gcm.encrypt(c[0..c_len], tag, m[0..m_len], ad[0..ad_len], nonce.*, k.*);
     return 0;
 }
@@ -77,7 +77,7 @@ export fn aes256gcm_decrypt(
     ad_len: usize,
     nonce: [*c]const [Aes256Gcm.nonce_length]u8,
     k: [*c]const [Aes256Gcm.key_length]u8,
-) callconv(.C) i32 {
+) callconv(.c) i32 {
     Aes256Gcm.decrypt(m[0..m_len], c[0..c_len], tag.*, ad[0..ad_len], nonce.*, k.*) catch return -1;
     return 0;
 }
@@ -94,7 +94,7 @@ export fn aes128ocb_encrypt(
     ad_len: usize,
     nonce: [*c]const [Aes128Ocb.nonce_length]u8,
     k: [*c]const [Aes128Ocb.key_length]u8,
-) callconv(.C) i32 {
+) callconv(.c) i32 {
     Aes128Ocb.encrypt(c[0..c_len], tag, m[0..m_len], ad[0..ad_len], nonce.*, k.*);
     return 0;
 }
@@ -109,7 +109,7 @@ export fn aes128ocb_decrypt(
     ad_len: usize,
     nonce: [*c]const [Aes128Ocb.nonce_length]u8,
     k: [*c]const [Aes128Ocb.key_length]u8,
-) callconv(.C) i32 {
+) callconv(.c) i32 {
     Aes128Ocb.decrypt(m[0..m_len], c[0..c_len], tag.*, ad[0..ad_len], nonce.*, k.*) catch return -1;
     return 0;
 }
@@ -126,7 +126,7 @@ export fn aes256ocb_encrypt(
     ad_len: usize,
     nonce: [*c]const [Aes256Ocb.nonce_length]u8,
     k: [*c]const [Aes256Ocb.key_length]u8,
-) callconv(.C) i32 {
+) callconv(.c) i32 {
     Aes256Ocb.encrypt(c[0..c_len], tag, m[0..m_len], ad[0..ad_len], nonce.*, k.*);
     return 0;
 }
@@ -141,7 +141,7 @@ export fn aes256ocb_decrypt(
     ad_len: usize,
     nonce: [*c]const [Aes256Ocb.nonce_length]u8,
     k: [*c]const [Aes256Ocb.key_length]u8,
-) callconv(.C) i32 {
+) callconv(.c) i32 {
     Aes256Ocb.decrypt(m[0..m_len], c[0..c_len], tag.*, ad[0..ad_len], nonce.*, k.*) catch return -1;
     return 0;
 }
@@ -155,7 +155,7 @@ export fn aes128cbc_encrypt(
     m_len: usize,
     iv: [*c]const [16]u8,
     k: [*c]const [16]u8,
-) callconv(.C) i32 {
+) callconv(.c) i32 {
     const z = Aes128Cbc.init(k.*);
     z.encrypt(c[0..c_len], m[0..m_len], iv.*);
     return 0;
@@ -168,7 +168,7 @@ export fn aes128cbc_decrypt(
     c_len: usize,
     iv: [*c]const [16]u8,
     k: [*c]const [16]u8,
-) callconv(.C) i32 {
+) callconv(.c) i32 {
     const z = Aes128Cbc.init(k.*);
     const trimmed = z.decryptAndTrim(m[0..m_len], c[0..c_len], iv.*) catch return -1;
     return std.math.cast(i32, trimmed.len) orelse return -1;
@@ -183,7 +183,7 @@ export fn aes256cbc_encrypt(
     m_len: usize,
     iv: [*c]const [16]u8,
     k: [*c]const [32]u8,
-) callconv(.C) i32 {
+) callconv(.c) i32 {
     const z = Aes256Cbc.init(k.*);
     z.encrypt(c[0..c_len], m[0..m_len], iv.*);
     return 0;
@@ -196,7 +196,7 @@ export fn aes256cbc_decrypt(
     c_len: usize,
     iv: [*c]const [16]u8,
     k: [*c]const [32]u8,
-) callconv(.C) i32 {
+) callconv(.c) i32 {
     const z = Aes256Cbc.init(k.*);
     const trimmed = z.decryptAndTrim(m[0..m_len], c[0..c_len], iv.*) catch return -1;
     return std.math.cast(i32, trimmed.len) orelse return -1;
@@ -214,7 +214,7 @@ export fn _aegis128l_encrypt(
     ad_len: usize,
     nonce: [*c]const [Aegis128L.nonce_length]u8,
     k: [*c]const [Aegis128L.key_length]u8,
-) callconv(.C) i32 {
+) callconv(.c) i32 {
     Aegis128L.encrypt(c[0..c_len], tag, m[0..m_len], ad[0..ad_len], nonce.*, k.*);
     return 0;
 }
@@ -229,7 +229,7 @@ export fn _aegis128l_decrypt(
     ad_len: usize,
     nonce: [*c]const [Aegis128L.nonce_length]u8,
     k: [*c]const [Aegis128L.key_length]u8,
-) callconv(.C) i32 {
+) callconv(.c) i32 {
     Aegis128L.decrypt(m[0..m_len], c[0..c_len], tag.*, ad[0..ad_len], nonce.*, k.*) catch return -1;
     return 0;
 }
@@ -246,7 +246,7 @@ export fn _aegis128x2_encrypt(
     ad_len: usize,
     nonce: [*c]const [Aegis128X2.nonce_length]u8,
     k: [*c]const [Aegis128X2.key_length]u8,
-) callconv(.C) i32 {
+) callconv(.c) i32 {
     Aegis128X2.encrypt(c[0..c_len], tag, m[0..m_len], ad[0..ad_len], nonce.*, k.*);
     return 0;
 }
@@ -261,7 +261,7 @@ export fn _aegis128x2_decrypt(
     ad_len: usize,
     nonce: [*c]const [Aegis128X2.nonce_length]u8,
     k: [*c]const [Aegis128X2.key_length]u8,
-) callconv(.C) i32 {
+) callconv(.c) i32 {
     Aegis128X2.decrypt(m[0..m_len], c[0..c_len], tag.*, ad[0..ad_len], nonce.*, k.*) catch return -1;
     return 0;
 }
@@ -278,7 +278,7 @@ export fn _aegis128x4_encrypt(
     ad_len: usize,
     nonce: [*c]const [Aegis128X4.nonce_length]u8,
     k: [*c]const [Aegis128X4.key_length]u8,
-) callconv(.C) i32 {
+) callconv(.c) i32 {
     Aegis128X4.encrypt(c[0..c_len], tag, m[0..m_len], ad[0..ad_len], nonce.*, k.*);
     return 0;
 }
@@ -293,7 +293,7 @@ export fn _aegis128x4_decrypt(
     ad_len: usize,
     nonce: [*c]const [Aegis128X4.nonce_length]u8,
     k: [*c]const [Aegis128X4.key_length]u8,
-) callconv(.C) i32 {
+) callconv(.c) i32 {
     Aegis128X4.decrypt(m[0..m_len], c[0..c_len], tag.*, ad[0..ad_len], nonce.*, k.*) catch return -1;
     return 0;
 }
@@ -310,7 +310,7 @@ export fn _aegis256_encrypt(
     ad_len: usize,
     nonce: [*c]const [Aegis256.nonce_length]u8,
     k: [*c]const [Aegis256.key_length]u8,
-) callconv(.C) i32 {
+) callconv(.c) i32 {
     Aegis256.encrypt(c[0..c_len], tag, m[0..m_len], ad[0..ad_len], nonce.*, k.*);
     return 0;
 }
@@ -325,7 +325,7 @@ export fn _aegis256_decrypt(
     ad_len: usize,
     nonce: [*c]const [Aegis256.nonce_length]u8,
     k: [*c]const [Aegis256.key_length]u8,
-) callconv(.C) i32 {
+) callconv(.c) i32 {
     Aegis256.decrypt(m[0..m_len], c[0..c_len], tag.*, ad[0..ad_len], nonce.*, k.*) catch return -1;
     return 0;
 }
@@ -342,7 +342,7 @@ export fn _aegis256x2_encrypt(
     ad_len: usize,
     nonce: [*c]const [Aegis256X2.nonce_length]u8,
     k: [*c]const [Aegis256X2.key_length]u8,
-) callconv(.C) i32 {
+) callconv(.c) i32 {
     Aegis256X2.encrypt(c[0..c_len], tag, m[0..m_len], ad[0..ad_len], nonce.*, k.*);
     return 0;
 }
@@ -357,7 +357,7 @@ export fn _aegis256x2_decrypt(
     ad_len: usize,
     nonce: [*c]const [Aegis256X2.nonce_length]u8,
     k: [*c]const [Aegis256X2.key_length]u8,
-) callconv(.C) i32 {
+) callconv(.c) i32 {
     Aegis256X2.decrypt(m[0..m_len], c[0..c_len], tag.*, ad[0..ad_len], nonce.*, k.*) catch return -1;
     return 0;
 }
@@ -374,7 +374,7 @@ export fn _aegis256x4_encrypt(
     ad_len: usize,
     nonce: [*c]const [Aegis256X4.nonce_length]u8,
     k: [*c]const [Aegis256X4.key_length]u8,
-) callconv(.C) i32 {
+) callconv(.c) i32 {
     Aegis256X4.encrypt(c[0..c_len], tag, m[0..m_len], ad[0..ad_len], nonce.*, k.*);
     return 0;
 }
@@ -389,7 +389,7 @@ export fn _aegis256x4_decrypt(
     ad_len: usize,
     nonce: [*c]const [Aegis256X4.nonce_length]u8,
     k: [*c]const [Aegis256X4.key_length]u8,
-) callconv(.C) i32 {
+) callconv(.c) i32 {
     Aegis256X4.decrypt(m[0..m_len], c[0..c_len], tag.*, ad[0..ad_len], nonce.*, k.*) catch return -1;
     return 0;
 }
@@ -403,7 +403,7 @@ export fn aes128ctr(
     in_len: usize,
     iv: [*c]const [16]u8,
     k: [*c]const [16]u8,
-) callconv(.C) i32 {
+) callconv(.c) i32 {
     const aes = std.crypto.core.aes.Aes128.initEnc(k.*);
     modes.ctr(@TypeOf(aes), aes, out[0..out_len], in[0..in_len], iv.*, std.builtin.Endian.big);
     return 0;
@@ -418,7 +418,7 @@ export fn aes256ctr(
     in_len: usize,
     iv: [*c]const [16]u8,
     k: [*c]const [32]u8,
-) callconv(.C) i32 {
+) callconv(.c) i32 {
     const aes = std.crypto.core.aes.Aes256.initEnc(k.*);
     modes.ctr(@TypeOf(aes), aes, out[0..out_len], in[0..in_len], iv.*, std.builtin.Endian.big);
     return 0;
@@ -431,7 +431,7 @@ export fn cmac_aes128(
     in: [*c]const u8,
     in_len: usize,
     k: [*c]const [CmacAes128.key_length]u8,
-) callconv(.C) i32 {
+) callconv(.c) i32 {
     CmacAes128.create(out, in[0..in_len], k);
     return 0;
 }

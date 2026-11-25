@@ -17,28 +17,31 @@ pub fn build(b: *std.Build) void {
         .optimize = optimize,
     });
 
-    const lib = b.addStaticLibrary(.{
+    const lib = b.addLibrary(.{
+        .linkage = .static,
         .name = "aes",
-        .root_source_file = b.path("aes.zig"),
-        .target = target,
-        .optimize = optimize,
-        .strip = true,
+        .root_module = b.createModule(.{
+            .root_source_file = b.path("aes.zig"),
+            .target = target,
+            .optimize = optimize,
+            .strip = true,
+        }),
     });
     lib.root_module.addImport("cbc", cbc.module("cbc"));
-    lib.linkLibrary(cbc.artifact("cbc"));
     b.installArtifact(lib);
 
     const exe = b.addExecutable(.{
         .name = "aes",
-        .root_source_file = b.path("aes.zig"),
-        .target = target,
-        .optimize = optimize,
-        .strip = true,
+        .root_module = b.createModule(.{
+            .root_source_file = b.path("aes.zig"),
+            .target = target,
+            .optimize = optimize,
+            .strip = true,
+        }),
     });
     exe.rdynamic = true;
     exe.wasi_exec_model = .reactor;
     exe.entry = .disabled;
     exe.root_module.addImport("cbc", cbc.module("cbc"));
-    exe.linkLibrary(cbc.artifact("cbc"));
     b.installArtifact(exe);
 }

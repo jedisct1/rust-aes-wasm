@@ -7,8 +7,8 @@
 
     .dependencies = .{
         .cbc = .{
-            .url = "https://github.com/jedisct1/zig-cbc/archive/refs/tags/0.1.2.tar.gz",
-            .hash = "122050482956917066c64d32b571ae80f7291fa5c5a12ecf05e5a0bf65600eff4d65",
+            .url = "https://github.com/jedisct1/zig-cbc/archive/665e1a446d39938c334d5e2ab16ce57e3b358be3.tar.gz",
+            .hash = "cbc-0.1.4-zRGiTssqAACeTYxtK_oluHojT95MWOrmL4QLW2hgRjBG",
         },
     },
     .paths = .{
