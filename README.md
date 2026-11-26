@@ -35,7 +35,7 @@ Add to your `Cargo.toml`:
 aes-wasm = "*"
 ```
 
-> **Note:** Make sure your target is set to a WASI platform, such as `wasm32-wasi`.
+> **Note:** Make sure your target is set to a WASI platform, such as `wasm32-wasip1`.
 
 ## Usage
 
